@@ -1,0 +1,16 @@
+{
+  "name": "mariospizza",
+  "version": "1.0.0",
+  "description": "Pizza delivery platform",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node .",
+    "start": "node .",
+    "build": "echo 'Build script here'",
+    "test": "echo 'Test script here'"
+  },
+  "keywords": ["pizza", "delivery"],
+  "author": "Mario Eduardo",
+  "license": "MIT",
+  "dependencies": {}
+}

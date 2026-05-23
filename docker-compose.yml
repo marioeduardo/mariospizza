@@ -1,0 +1,20 @@
+services:
+  mariospizza_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mariospizza_app
+    hostname: mariospizza_app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - proxy
+    labels:
+      - "com.example.description=MariosPizza Application"
+
+networks:
+  proxy:
+    external: true
