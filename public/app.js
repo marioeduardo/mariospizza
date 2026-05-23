@@ -2,6 +2,10 @@
 
 const STORAGE_KEY = 'mariospizza:last-recipe';
 
+// Configurações fixas do método
+const ROOM_TEMP_HOURS = 1; // tempo do poolish fora da geladeira antes de refrigerar
+const FRIDGE_TEMP = 4;     // °C, temperatura da geladeira
+
 const PRESETS = {
   classica: {
     label: 'Clássica',
@@ -9,7 +13,7 @@ const PRESETS = {
     salt: 2.8,
     ballWeight: 250,
     poolishPct: 30,
-    poolishHours: 16,
+    poolishHours: 10, // horas na geladeira
     finalHours: 24,
     ambientTemp: 22,
   },
@@ -19,7 +23,7 @@ const PRESETS = {
     salt: 2.8,
     ballWeight: 270,
     poolishPct: 30,
-    poolishHours: 16,
+    poolishHours: 10,
     finalHours: 24,
     ambientTemp: 22,
   },
@@ -37,16 +41,24 @@ const FIELDS = [
 ];
 
 // --- Cálculo do fermento ---
-// Curva empírica para fermento fresco no poolish a 20 °C:
+// Modelo: poolish fica 1h em temperatura ambiente + N horas na geladeira (~4°C).
+// Convertemos os dois trechos em "horas equivalentes a 20°C" usando regra de
+// van't Hoff aproximada (atividade do fermento dobra a cada +8°C):
+//   equiv = horas × 2^((T − 20) / 8)
+// Depois aplicamos a curva clássica do poolish para fermento fresco a 20°C:
 //   F_fresh(t) ≈ 1.5 / t^1.1   (% sobre a farinha do poolish)
-// Conversão fresco → seco instantâneo: dividir por 3.
-// Ajuste por temperatura ambiente (van't Hoff aproximado):
-//   fator = 2^((20 − T_amb) / 8)  → +8 °C dobra atividade, então metade do fermento.
-function calcInstantYeastPct(poolishHours, ambientTemp) {
-  const freshAt20 = 1.5 / Math.pow(poolishHours, 1.1);
-  const tempFactor = Math.pow(2, (20 - ambientTemp) / 8);
-  const dryPct = (freshAt20 / 3) * tempFactor;
-  return Math.max(dryPct, 0.005); // piso mínimo para não dar zero
+// E convertemos pra seco instantâneo dividindo por 3.
+function calcEquivalentHoursAt20C(roomHours, roomTemp, fridgeHours) {
+  const fromRoom = roomHours * Math.pow(2, (roomTemp - 20) / 8);
+  const fromFridge = fridgeHours * Math.pow(2, (FRIDGE_TEMP - 20) / 8);
+  return fromRoom + fromFridge;
+}
+
+function calcInstantYeastPct(fridgeHours, ambientTemp) {
+  const equivHours = calcEquivalentHoursAt20C(ROOM_TEMP_HOURS, ambientTemp, fridgeHours);
+  const freshAt20 = 1.5 / Math.pow(Math.max(equivHours, 0.5), 1.1);
+  const dryPct = freshAt20 / 3;
+  return Math.max(dryPct, 0.005);
 }
 
 function calcRecipe(inputs) {
@@ -65,7 +77,7 @@ function calcRecipe(inputs) {
   const totalMass = numPizzas * ballWeight;
 
   // peso_total = farinha * (1 + H/100 + S/100 + (P * yeastPct)/10000)
-  // o fermento incide apenas sobre a farinha do poolish (P% da farinha total)
+  // fermento incide apenas sobre a farinha do poolish (P% da farinha total)
   const denominator = 1 + hydration / 100 + salt / 100 + (poolishPct * yeastPct) / 10000;
   const totalFlour = totalMass / denominator;
 
@@ -108,13 +120,10 @@ function buildWarnings({ hydration, poolishPct, finalWater, ambientTemp, poolish
     w.push('Sobra muito pouca água para a massa final. Considere reduzir a % do poolish.');
   }
   if (ambientTemp >= 30) {
-    w.push('Temperatura ambiente alta. O fermento foi reduzido, mas considere também encurtar o tempo do poolish.');
+    w.push('Temperatura ambiente alta — o fermento foi reduzido, mas considere encurtar a hora fora da geladeira.');
   }
-  if (ambientTemp <= 12) {
-    w.push('Temperatura ambiente baixa. O fermento foi aumentado, mas o poolish pode demorar mais que o esperado.');
-  }
-  if (poolishHours < 6) {
-    w.push('Poolish com menos de 6h não desenvolve sabor adequado. Recomendado 8–24h.');
+  if (poolishHours < 4) {
+    w.push('Menos de 4h de geladeira não é tempo suficiente para o poolish desenvolver sabor. Recomendado 6–18h.');
   }
   return w;
 }
@@ -155,9 +164,28 @@ function readInputs() {
 function writeInputs(values) {
   for (const id of FIELDS) {
     if (values[id] !== undefined) {
-      $(id).value = values[id];
+      const el = $(id);
+      el.value = values[id];
+      updateSliderDisplay(el);
     }
   }
+}
+
+function updateSliderDisplay(el) {
+  const display = $(`${el.id}Value`);
+  if (display) {
+    display.textContent = el.value;
+  }
+  updateSliderTrack(el);
+}
+
+function updateSliderTrack(el) {
+  if (el.type !== 'range') return;
+  const min = Number(el.min);
+  const max = Number(el.max);
+  const val = Number(el.value);
+  const pct = ((val - min) / (max - min)) * 100;
+  el.style.setProperty('--track-pct', `${pct}%`);
 }
 
 function setActivePreset(name) {
@@ -248,6 +276,14 @@ function init() {
     btn.addEventListener('click', () => applyPreset(btn.dataset.preset));
   });
 
+  // sliders: live-update do valor mostrado e da cor do track
+  for (const id of FIELDS) {
+    const el = $(id);
+    if (!el) continue;
+    el.addEventListener('input', () => updateSliderDisplay(el));
+    updateSliderDisplay(el);
+  }
+
   $('calcBtn').addEventListener('click', calculate);
 
   const last = loadLast();
@@ -256,7 +292,6 @@ function init() {
     if (last.preset) setActivePreset(last.preset);
     const recipe = calcRecipe(last.inputs);
     renderRecipe(recipe, last.inputs);
-    // não fazer scroll automático ao restaurar — só na ação do usuário
     requestAnimationFrame(() => window.scrollTo({ top: 0 }));
   } else {
     applyPreset('contemporanea');

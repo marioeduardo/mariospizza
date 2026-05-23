@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mariospizza-v2';
+const CACHE_NAME = 'mariospizza-v3';
 const ASSETS = [
   '/',
   '/index.html',

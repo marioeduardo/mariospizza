@@ -211,7 +211,7 @@ main {
 
 /* ----- Form ----- */
 .field {
-  margin-bottom: 14px;
+  margin-bottom: 18px;
 }
 
 .field:last-child {
@@ -220,44 +220,187 @@ main {
 
 .field label {
   display: block;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.8px;
   text-transform: uppercase;
-  margin-bottom: 8px;
   color: var(--text-soft);
-}
-
-.field input {
-  width: 100%;
-  padding: 12px 14px;
-  font-size: 1rem;
-  font-weight: 600;
-  border: 1px solid var(--glass-border);
-  border-radius: 10px;
-  background: rgba(10, 4, 32, 0.45);
-  color: var(--text);
-  font-family: inherit;
-  -webkit-appearance: none;
-  appearance: none;
-  transition: all 0.18s ease;
-}
-
-.field input:focus {
-  outline: none;
-  border-color: var(--neon-blue);
-  background: rgba(10, 4, 32, 0.7);
-  box-shadow:
-    0 0 0 1px var(--neon-blue),
-    0 0 20px rgba(0, 217, 255, 0.3);
 }
 
 .field .hint {
   display: block;
-  margin-top: 6px;
+  margin-top: 8px;
   font-size: 0.78rem;
   color: var(--text-muted);
   line-height: 1.4;
+}
+
+/* ----- Slider fields ----- */
+.slider-field {
+  padding: 6px 4px 2px;
+}
+
+.slider-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+  gap: 12px;
+}
+
+.slider-value {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--neon-blue);
+  text-shadow:
+    0 0 6px rgba(0, 217, 255, 0.5),
+    0 0 18px rgba(0, 217, 255, 0.25);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.slider-value small {
+  font-size: 0.7em;
+  font-weight: 600;
+  opacity: 0.75;
+  margin-left: 2px;
+}
+
+input[type="range"] {
+  --thumb-size: 24px;
+  --track-pct: 50%;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: var(--thumb-size);
+  background: transparent;
+  outline: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+
+/* Track WebKit */
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, var(--neon-blue) 0%, var(--magenta) var(--track-pct), rgba(255, 255, 255, 0.1) var(--track-pct), rgba(255, 255, 255, 0.1) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--thumb-size);
+  height: var(--thumb-size);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffffff 0%, var(--neon-blue) 40%, var(--magenta) 100%);
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  box-shadow:
+    0 0 12px rgba(0, 217, 255, 0.6),
+    0 0 24px rgba(255, 46, 154, 0.35),
+    0 2px 6px rgba(0, 0, 0, 0.4);
+  margin-top: -10px;
+  cursor: grab;
+  transition: transform 0.1s ease;
+}
+
+input[type="range"]:active::-webkit-slider-thumb {
+  cursor: grabbing;
+  transform: scale(1.1);
+}
+
+/* Track Firefox */
+input[type="range"]::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+input[type="range"]::-moz-range-progress {
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--neon-blue), var(--magenta));
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: var(--thumb-size);
+  height: var(--thumb-size);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffffff 0%, var(--neon-blue) 40%, var(--magenta) 100%);
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  box-shadow:
+    0 0 12px rgba(0, 217, 255, 0.6),
+    0 0 24px rgba(255, 46, 154, 0.35),
+    0 2px 6px rgba(0, 0, 0, 0.4);
+  cursor: grab;
+}
+
+input[type="range"]:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--neon-cyan);
+  outline-offset: 2px;
+}
+
+/* ----- Collapsible ----- */
+details.advanced {
+  margin-top: 18px;
+  border-top: 1px solid var(--glass-border);
+  padding-top: 4px;
+}
+
+details.advanced > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 4px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--neon-cyan);
+  text-shadow: 0 0 8px rgba(0, 255, 245, 0.35);
+  user-select: none;
+}
+
+details.advanced > summary::-webkit-details-marker {
+  display: none;
+}
+
+.summary-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 1.3rem;
+  font-weight: 400;
+  background: rgba(0, 255, 245, 0.08);
+  border: 1px solid rgba(0, 255, 245, 0.35);
+  color: var(--neon-cyan);
+  transition: transform 0.25s ease, background 0.2s ease;
+}
+
+details.advanced[open] > summary .summary-icon {
+  transform: rotate(45deg);
+  background: rgba(255, 46, 154, 0.12);
+  border-color: rgba(255, 46, 154, 0.5);
+  color: var(--magenta-soft);
+}
+
+.advanced-body {
+  padding-top: 8px;
+  animation: fadeSlide 0.25s ease;
+}
+
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ----- Calculate button: sunburst (igual o forno) ----- */

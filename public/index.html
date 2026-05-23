@@ -41,49 +41,82 @@
     <section class="card">
       <h2>Parâmetros</h2>
 
-      <div class="field">
-        <label for="numPizzas">Quantas pizzas?</label>
-        <input type="number" id="numPizzas" min="1" max="100" step="1" value="6" inputmode="numeric" />
+      <div class="field slider-field">
+        <div class="slider-header">
+          <label for="numPizzas">Quantas pizzas?</label>
+          <span class="slider-value" id="numPizzasValue">6</span>
+        </div>
+        <input type="range" id="numPizzas" min="1" max="20" step="1" value="6" />
       </div>
 
-      <div class="field">
-        <label for="ballWeight">Peso de cada bolinha (g)</label>
-        <input type="number" id="ballWeight" min="100" max="500" step="5" value="270" inputmode="numeric" />
-      </div>
+      <details class="advanced">
+        <summary>
+          <span class="summary-label">Personalizar receita</span>
+          <span class="summary-icon" aria-hidden="true">+</span>
+        </summary>
 
-      <div class="field">
-        <label for="hydration">Hidratação total (%)</label>
-        <input type="number" id="hydration" min="50" max="90" step="1" value="70" inputmode="numeric" />
-      </div>
+        <div class="advanced-body">
+          <div class="field slider-field">
+            <div class="slider-header">
+              <label for="ballWeight">Peso da bolinha</label>
+              <span class="slider-value"><span id="ballWeightValue">270</span><small>g</small></span>
+            </div>
+            <input type="range" id="ballWeight" min="150" max="350" step="5" value="270" />
+          </div>
 
-      <div class="field">
-        <label for="salt">Sal (% sobre a farinha)</label>
-        <input type="number" id="salt" min="0" max="5" step="0.1" value="2.8" inputmode="decimal" />
-      </div>
+          <div class="field slider-field">
+            <div class="slider-header">
+              <label for="hydration">Hidratação total</label>
+              <span class="slider-value"><span id="hydrationValue">70</span><small>%</small></span>
+            </div>
+            <input type="range" id="hydration" min="55" max="85" step="1" value="70" />
+          </div>
 
-      <div class="field">
-        <label for="poolishPct">Poolish — % da farinha total</label>
-        <input type="number" id="poolishPct" min="10" max="50" step="1" value="30" inputmode="numeric" />
-        <small class="hint">Poolish sempre 100% hidratação (peso de farinha = peso de água).</small>
-      </div>
+          <div class="field slider-field">
+            <div class="slider-header">
+              <label for="salt">Sal (% da farinha)</label>
+              <span class="slider-value"><span id="saltValue">2.8</span><small>%</small></span>
+            </div>
+            <input type="range" id="salt" min="0" max="5" step="0.1" value="2.8" />
+          </div>
 
-      <div class="field">
-        <label for="ambientTemp">Temperatura ambiente (°C)</label>
-        <input type="number" id="ambientTemp" min="5" max="40" step="1" value="22" inputmode="numeric" />
-        <small class="hint">Ajusta a quantidade de fermento. Quanto mais quente, menos fermento.</small>
-      </div>
+          <div class="field slider-field">
+            <div class="slider-header">
+              <label for="poolishPct">Poolish — % da farinha</label>
+              <span class="slider-value"><span id="poolishPctValue">30</span><small>%</small></span>
+            </div>
+            <input type="range" id="poolishPct" min="10" max="50" step="1" value="30" />
+            <small class="hint">Poolish sempre 100% hidratação (peso de farinha = peso de água).</small>
+          </div>
 
-      <div class="field">
-        <label for="poolishHours">Tempo do poolish (horas)</label>
-        <input type="number" id="poolishHours" min="2" max="48" step="1" value="16" inputmode="numeric" />
-        <small class="hint">Maturação do pré-fermento em temperatura ambiente.</small>
-      </div>
+          <div class="field slider-field">
+            <div class="slider-header">
+              <label for="ambientTemp">Temperatura ambiente</label>
+              <span class="slider-value"><span id="ambientTempValue">22</span><small>°C</small></span>
+            </div>
+            <input type="range" id="ambientTemp" min="5" max="40" step="1" value="22" />
+            <small class="hint">Afeta a 1h em que o poolish fica fora da geladeira. Mais calor, menos fermento.</small>
+          </div>
 
-      <div class="field">
-        <label for="finalHours">Tempo da massa final (horas)</label>
-        <input type="number" id="finalHours" min="2" max="120" step="1" value="24" inputmode="numeric" />
-        <small class="hint">Fermentação após misturar (geralmente na geladeira).</small>
-      </div>
+          <div class="field slider-field">
+            <div class="slider-header">
+              <label for="poolishHours">Poolish na geladeira</label>
+              <span class="slider-value"><span id="poolishHoursValue">10</span><small>h</small></span>
+            </div>
+            <input type="range" id="poolishHours" min="2" max="48" step="1" value="10" />
+            <small class="hint">Depois de 1h em temperatura ambiente, vai pra geladeira por esse tempo.</small>
+          </div>
+
+          <div class="field slider-field">
+            <div class="slider-header">
+              <label for="finalHours">Massa final (geladeira)</label>
+              <span class="slider-value"><span id="finalHoursValue">24</span><small>h</small></span>
+            </div>
+            <input type="range" id="finalHours" min="2" max="96" step="1" value="24" />
+            <small class="hint">Fermentação da massa final, geralmente na geladeira.</small>
+          </div>
+        </div>
+      </details>
     </section>
 
     <button type="button" id="calcBtn" class="calc-btn">Calcular receita</button>
@@ -118,7 +151,7 @@
 
       <div class="recipe-step">
         <h3><span class="step-num">1</span> Poolish (pré-fermento)</h3>
-        <p class="step-desc">Misture e deixe maturar em temperatura ambiente por <strong id="poolishTimeLabel">—</strong>, até dobrar e formar bolhinhas.</p>
+        <p class="step-desc">Misture, deixe <strong>1h em temperatura ambiente</strong> pra ativar o fermento, e leve à geladeira por <strong id="poolishTimeLabel">—</strong>. Vai estar pronto com bolhinhas na superfície.</p>
         <ul class="ingredients">
           <li><span>Farinha</span><strong id="poolishFlour">—</strong></li>
           <li><span>Água</span><strong id="poolishWater">—</strong></li>
