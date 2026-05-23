@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#c0392b" />
+  <meta name="description" content="Calculadora de receita de massa de pizza napolitana com poolish" />
+
+  <title>Mario's Pizza</title>
+
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="/icons/icon.svg" />
+  <link rel="apple-touch-icon" href="/icons/icon-180.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Mario's Pizza" />
+
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1><span class="emoji" aria-hidden="true">🍕</span> Mario's Pizza</h1>
+    <p class="subtitle">Calculadora de massa napolitana com poolish</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Estilo</h2>
+      <div class="preset-buttons" role="tablist" aria-label="Presets de estilo">
+        <button type="button" class="preset-btn" data-preset="classica" role="tab">
+          Clássica
+          <small>60% hidratação</small>
+        </button>
+        <button type="button" class="preset-btn active" data-preset="contemporanea" role="tab" aria-selected="true">
+          Contemporânea
+          <small>70% hidratação</small>
+        </button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Parâmetros</h2>
+
+      <div class="field">
+        <label for="numPizzas">Quantas pizzas?</label>
+        <input type="number" id="numPizzas" min="1" max="100" step="1" value="6" inputmode="numeric" />
+      </div>
+
+      <div class="field">
+        <label for="ballWeight">Peso de cada bolinha (g)</label>
+        <input type="number" id="ballWeight" min="100" max="500" step="5" value="270" inputmode="numeric" />
+      </div>
+
+      <div class="field">
+        <label for="hydration">Hidratação total (%)</label>
+        <input type="number" id="hydration" min="50" max="90" step="1" value="70" inputmode="numeric" />
+      </div>
+
+      <div class="field">
+        <label for="salt">Sal (% sobre a farinha)</label>
+        <input type="number" id="salt" min="0" max="5" step="0.1" value="2.8" inputmode="decimal" />
+      </div>
+
+      <div class="field">
+        <label for="poolishPct">Poolish — % da farinha total</label>
+        <input type="number" id="poolishPct" min="10" max="50" step="1" value="30" inputmode="numeric" />
+        <small class="hint">Poolish sempre 100% hidratação (peso de farinha = peso de água).</small>
+      </div>
+
+      <div class="field">
+        <label for="ambientTemp">Temperatura ambiente (°C)</label>
+        <input type="number" id="ambientTemp" min="5" max="40" step="1" value="22" inputmode="numeric" />
+        <small class="hint">Ajusta a quantidade de fermento. Quanto mais quente, menos fermento.</small>
+      </div>
+
+      <div class="field">
+        <label for="poolishHours">Tempo do poolish (horas)</label>
+        <input type="number" id="poolishHours" min="2" max="48" step="1" value="16" inputmode="numeric" />
+        <small class="hint">Maturação do pré-fermento em temperatura ambiente.</small>
+      </div>
+
+      <div class="field">
+        <label for="finalHours">Tempo da massa final (horas)</label>
+        <input type="number" id="finalHours" min="2" max="120" step="1" value="24" inputmode="numeric" />
+        <small class="hint">Fermentação após misturar (geralmente na geladeira).</small>
+      </div>
+    </section>
+
+    <button type="button" id="calcBtn" class="calc-btn">Calcular receita</button>
+
+    <section class="card result" id="result" hidden>
+      <h2>Receita</h2>
+
+      <div id="warning" class="warning" hidden></div>
+
+      <div class="totals">
+        <div class="total-item">
+          <span class="label">Massa total</span>
+          <span class="value" id="totalMass">—</span>
+        </div>
+        <div class="total-item">
+          <span class="label">Farinha</span>
+          <span class="value" id="totalFlour">—</span>
+        </div>
+        <div class="total-item">
+          <span class="label">Água</span>
+          <span class="value" id="totalWater">—</span>
+        </div>
+        <div class="total-item">
+          <span class="label">Sal</span>
+          <span class="value" id="totalSalt">—</span>
+        </div>
+        <div class="total-item">
+          <span class="label">Fermento</span>
+          <span class="value" id="totalYeast">—</span>
+        </div>
+      </div>
+
+      <div class="recipe-step">
+        <h3><span class="step-num">1</span> Poolish (pré-fermento)</h3>
+        <p class="step-desc">Misture e deixe maturar em temperatura ambiente por <strong id="poolishTimeLabel">—</strong>, até dobrar e formar bolhinhas.</p>
+        <ul class="ingredients">
+          <li><span>Farinha</span><strong id="poolishFlour">—</strong></li>
+          <li><span>Água</span><strong id="poolishWater">—</strong></li>
+          <li><span>Fermento seco instantâneo</span><strong id="poolishYeast">—</strong></li>
+        </ul>
+      </div>
+
+      <div class="recipe-step">
+        <h3><span class="step-num">2</span> Massa final</h3>
+        <p class="step-desc">Misture o poolish maduro com o restante dos ingredientes. Sove, deixe descansar e divida em <strong id="ballCountLabel">—</strong> bolinhas. Fermente por <strong id="finalTimeLabel">—</strong> (geladeira).</p>
+        <ul class="ingredients">
+          <li><span>Farinha</span><strong id="finalFlour">—</strong></li>
+          <li><span>Água</span><strong id="finalWater">—</strong></li>
+          <li><span>Sal</span><strong id="finalSalt">—</strong></li>
+        </ul>
+      </div>
+
+      <div class="recipe-meta">
+        <small id="recipeTimestamp"></small>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <small>Receitas e configurações são salvas localmente no seu dispositivo.</small>
+  </footer>
+
+  <script src="/app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(err => console.warn('SW registration failed:', err));
+      });
+    }
+  </script>
+</body>
+</html>

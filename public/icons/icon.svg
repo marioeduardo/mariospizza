@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#e67e22"/>
+      <stop offset="100%" stop-color="#c0392b"/>
+    </radialGradient>
+    <radialGradient id="crust" cx="50%" cy="50%" r="50%">
+      <stop offset="78%" stop-color="#f7cf8f"/>
+      <stop offset="100%" stop-color="#a8662a"/>
+    </radialGradient>
+    <radialGradient id="sauce" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e74c3c"/>
+      <stop offset="100%" stop-color="#c0392b"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="url(#bg)"/>
+  <circle cx="256" cy="256" r="180" fill="url(#crust)"/>
+  <circle cx="256" cy="256" r="150" fill="url(#sauce)"/>
+  <!-- queijo / manchas brancas -->
+  <circle cx="200" cy="200" r="22" fill="#fdf6ec" opacity="0.95"/>
+  <circle cx="310" cy="210" r="18" fill="#fdf6ec" opacity="0.95"/>
+  <circle cx="220" cy="300" r="20" fill="#fdf6ec" opacity="0.95"/>
+  <circle cx="320" cy="310" r="24" fill="#fdf6ec" opacity="0.95"/>
+  <circle cx="265" cy="260" r="16" fill="#fdf6ec" opacity="0.95"/>
+  <!-- manjericão -->
+  <ellipse cx="180" cy="265" rx="10" ry="14" fill="#27ae60" transform="rotate(-20 180 265)"/>
+  <ellipse cx="290" cy="170" rx="10" ry="14" fill="#27ae60" transform="rotate(30 290 170)"/>
+  <ellipse cx="280" cy="345" rx="10" ry="14" fill="#27ae60" transform="rotate(-40 280 345)"/>
+</svg>

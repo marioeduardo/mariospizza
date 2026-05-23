@@ -1,8 +1,55 @@
-# MariosPizza 🍕
+# Mario's Pizza 🍕
 
-**Status:** ✅ Ready for development
+Calculadora de receita de massa de pizza napolitana com **poolish** (pré-fermento), em formato PWA instalável.
 
 **URL:** https://pizza.marioeduardo.com.br
+
+## O que faz
+
+A partir de:
+- quantidade de pizzas e peso de cada bolinha,
+- hidratação total e % de sal,
+- % da farinha que vai no poolish,
+- temperatura ambiente e tempos de fermentação,
+
+a app calcula:
+- a **massa total** (farinha, água, sal, fermento) em baker's percentage,
+- a quebra em **duas etapas**: poolish (farinha + água + fermento seco instantâneo) e massa final (resto da farinha + resto da água + sal),
+- ajuste automático da quantidade de fermento por **temperatura ambiente** e **tempo do poolish**.
+
+Inclui presets para **Napolitana Clássica** (60% hidratação) e **Contemporânea** (70%). A última receita é salva no `localStorage` e restaurada na próxima visita.
+
+## Stack
+
+- **Runtime:** Node.js + Express (servindo arquivos estáticos na porta 3000)
+- **Frontend:** HTML/CSS/JS vanilla, sem build step
+- **PWA:** manifest + service worker para instalação no celular e funcionamento offline
+- **Persistência:** `localStorage` no dispositivo
+
+## Estrutura
+
+```
+.
+├── server.js                 # Express servindo public/
+├── public/
+│   ├── index.html            # UI
+│   ├── styles.css
+│   ├── app.js                # cálculo da receita + presets + persistência
+│   ├── manifest.json         # PWA manifest
+│   ├── sw.js                 # service worker
+│   └── icons/                # ícones do app (svg + pngs gerados)
+├── scripts/
+│   └── generate-icons.js     # regenera PNGs a partir de icon.svg (usa sharp via npx)
+├── Dockerfile
+├── docker-compose.yml
+└── deploy.sh
+```
+
+Para regenerar os ícones (caso troque o `icon.svg`):
+
+```bash
+npx --yes sharp@0.34 node scripts/generate-icons.js
+```
 
 ---
 
