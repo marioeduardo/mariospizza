@@ -16,6 +16,17 @@
   <meta name="apple-mobile-web-app-title" content="Mario's Pizza" />
 
   <link rel="stylesheet" href="/styles.css" />
+  <script>
+    // Atualização do valor/track do slider — inline pra garantir feedback
+    // mesmo se app.js falhar em carregar/anexar listeners.
+    function tickSlider(el) {
+      var d = document.getElementById(el.id + 'Value');
+      if (d) d.textContent = el.value;
+      var min = +el.min, max = +el.max, val = +el.value;
+      var pct = max > min ? ((val - min) / (max - min)) * 100 : 0;
+      el.style.setProperty('--track-pct', pct + '%');
+    }
+  </script>
 </head>
 <body>
   <header class="app-header">
@@ -46,7 +57,7 @@
           <label for="numPizzas">Quantas pizzas?</label>
           <span class="slider-value" id="numPizzasValue">6</span>
         </div>
-        <input type="range" id="numPizzas" min="1" max="20" step="1" value="6" />
+        <input type="range" id="numPizzas" min="1" max="20" step="1" value="6" oninput="tickSlider(this)" />
       </div>
 
       <details class="advanced">
@@ -61,7 +72,7 @@
               <label for="ballWeight">Peso da bolinha</label>
               <span class="slider-value"><span id="ballWeightValue">270</span><small>g</small></span>
             </div>
-            <input type="range" id="ballWeight" min="150" max="350" step="5" value="270" />
+            <input type="range" id="ballWeight" min="150" max="350" step="5" value="270" oninput="tickSlider(this)" />
           </div>
 
           <div class="field slider-field">
@@ -69,7 +80,7 @@
               <label for="hydration">Hidratação total</label>
               <span class="slider-value"><span id="hydrationValue">70</span><small>%</small></span>
             </div>
-            <input type="range" id="hydration" min="55" max="85" step="1" value="70" />
+            <input type="range" id="hydration" min="55" max="85" step="1" value="70" oninput="tickSlider(this)" />
           </div>
 
           <div class="field slider-field">
@@ -77,7 +88,7 @@
               <label for="salt">Sal (% da farinha)</label>
               <span class="slider-value"><span id="saltValue">2.8</span><small>%</small></span>
             </div>
-            <input type="range" id="salt" min="0" max="5" step="0.1" value="2.8" />
+            <input type="range" id="salt" min="0" max="5" step="0.1" value="2.8" oninput="tickSlider(this)" />
           </div>
 
           <div class="field slider-field">
@@ -85,7 +96,7 @@
               <label for="poolishPct">Poolish — % da farinha</label>
               <span class="slider-value"><span id="poolishPctValue">30</span><small>%</small></span>
             </div>
-            <input type="range" id="poolishPct" min="10" max="50" step="1" value="30" />
+            <input type="range" id="poolishPct" min="10" max="50" step="1" value="30" oninput="tickSlider(this)" />
             <small class="hint">Poolish sempre 100% hidratação (peso de farinha = peso de água).</small>
           </div>
 
@@ -94,7 +105,7 @@
               <label for="ambientTemp">Temperatura ambiente</label>
               <span class="slider-value"><span id="ambientTempValue">22</span><small>°C</small></span>
             </div>
-            <input type="range" id="ambientTemp" min="5" max="40" step="1" value="22" />
+            <input type="range" id="ambientTemp" min="5" max="40" step="1" value="22" oninput="tickSlider(this)" />
             <small class="hint">Afeta a 1h em que o poolish fica fora da geladeira. Mais calor, menos fermento.</small>
           </div>
 
@@ -103,7 +114,7 @@
               <label for="poolishHours">Poolish na geladeira</label>
               <span class="slider-value"><span id="poolishHoursValue">10</span><small>h</small></span>
             </div>
-            <input type="range" id="poolishHours" min="2" max="48" step="1" value="10" />
+            <input type="range" id="poolishHours" min="2" max="48" step="1" value="10" oninput="tickSlider(this)" />
             <small class="hint">Depois de 1h em temperatura ambiente, vai pra geladeira por esse tempo.</small>
           </div>
 
@@ -112,7 +123,7 @@
               <label for="finalHours">Massa final (geladeira)</label>
               <span class="slider-value"><span id="finalHoursValue">24</span><small>h</small></span>
             </div>
-            <input type="range" id="finalHours" min="2" max="96" step="1" value="24" />
+            <input type="range" id="finalHours" min="2" max="96" step="1" value="24" oninput="tickSlider(this)" />
             <small class="hint">Fermentação da massa final, geralmente na geladeira.</small>
           </div>
         </div>
@@ -177,6 +188,7 @@
 
   <footer class="app-footer">
     <small>Receitas e configurações são salvas localmente no seu dispositivo.</small>
+    <small class="build-label">build v5 · 2026-05-23-sliders-inline</small>
   </footer>
 
   <script src="/app.js"></script>

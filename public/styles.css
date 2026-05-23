@@ -598,6 +598,16 @@ details.advanced[open] > summary .summary-icon {
   padding: 20px 16px 28px;
   color: var(--text-muted);
   font-size: 0.78rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.build-label {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.68rem;
+  opacity: 0.55;
+  letter-spacing: 0.5px;
 }
 
 /* Compat: navegadores sem backdrop-filter ganham fundo um pouco mais opaco */
