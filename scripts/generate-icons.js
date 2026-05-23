@@ -27,7 +27,7 @@ async function run() {
           width: size,
           height: size,
           channels: 4,
-          background: '#c0392b',
+          background: '#1a0838',
         },
       })
         .composite([

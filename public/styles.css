@@ -1,18 +1,34 @@
 :root {
-  --bg: #fdf6ec;
-  --surface: #ffffff;
-  --surface-2: #fbf3e3;
-  --text: #2b1d12;
-  --text-soft: #6d5841;
-  --primary: #c0392b;
-  --primary-dark: #962a1f;
-  --accent: #e67e22;
-  --border: #ead9bf;
-  --warning-bg: #fff3cd;
-  --warning-text: #7a5a00;
-  --warning-border: #f0d574;
-  --shadow: 0 2px 12px rgba(60, 35, 10, 0.08);
-  --radius: 14px;
+  /* Synthwave palette */
+  --bg-0: #0a0420;
+  --bg-1: #1a0838;
+  --bg-2: #2a0a4a;
+  --magenta: #ff2e9a;
+  --magenta-soft: #ff66c4;
+  --purple: #9d4edd;
+  --neon-blue: #00d9ff;
+  --neon-blue-soft: #66ecff;
+  --neon-cyan: #00fff5;
+  --hot-pink: #ff00aa;
+  --text: #f4ecff;
+  --text-soft: #c9b8f0;
+  --text-muted: #8e7eb8;
+
+  /* Sunburst (forno) */
+  --sun-0: #1a0500;
+  --sun-1: #ff8c1a;
+  --sun-2: #c44a06;
+  --sun-3: #6b1a02;
+
+  /* Glass */
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-bg-2: rgba(255, 255, 255, 0.07);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-border-strong: rgba(255, 255, 255, 0.22);
+  --shadow-deep: 0 12px 40px rgba(0, 0, 0, 0.5);
+
+  --radius: 18px;
+  --radius-sm: 12px;
 }
 
 * {
@@ -22,111 +38,178 @@
 html, body {
   margin: 0;
   padding: 0;
-  background: var(--bg);
   color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Roboto, Arial, sans-serif;
   font-size: 16px;
-  line-height: 1.45;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
 }
 
 body {
-  padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0);
+  background-color: var(--bg-0);
+  min-height: 100vh;
+  padding:
+    env(safe-area-inset-top, 0)
+    env(safe-area-inset-right, 0)
+    env(safe-area-inset-bottom, 0)
+    env(safe-area-inset-left, 0);
 }
 
+/* Fundo synthwave fixo no viewport (não scrolla com a página) */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 95%, rgba(255, 46, 154, 0.35) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(255, 140, 26, 0.25) 0%, transparent 55%),
+    radial-gradient(ellipse 100% 60% at 50% 0%, rgba(157, 78, 221, 0.35) 0%, transparent 55%),
+    linear-gradient(180deg, var(--bg-0) 0%, var(--bg-1) 50%, var(--bg-2) 100%);
+  z-index: -2;
+}
+
+/* Linhas de horizonte synthwave — bem sutis */
+body::after {
+  content: '';
+  position: fixed;
+  inset: auto 0 0 0;
+  height: 40vh;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 38px,
+      rgba(0, 217, 255, 0.06) 38px,
+      rgba(0, 217, 255, 0.06) 39px
+    );
+  mask-image: linear-gradient(to bottom, transparent 0%, black 50%, black 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 50%, black 100%);
+  z-index: -1;
+}
+
+main, .app-header, .app-footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* ----- Header com LED neon ----- */
 .app-header {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-  color: white;
-  padding: 24px 20px 20px;
   text-align: center;
+  padding: 36px 20px 28px;
 }
 
 .app-header h1 {
   margin: 0;
-  font-size: 1.7rem;
-  font-weight: 700;
-  letter-spacing: -0.5px;
+  font-size: clamp(2rem, 7vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #d6f6ff;
+  text-shadow:
+    0 0 4px #c4f0ff,
+    0 0 10px var(--neon-blue),
+    0 0 22px var(--neon-blue),
+    0 0 42px #0095ff,
+    0 0 80px #0066ff;
 }
 
-.app-header .emoji {
-  display: inline-block;
-  transform: translateY(2px);
-  margin-right: 4px;
+.app-header h1 .emoji {
+  filter: drop-shadow(0 0 8px rgba(255, 140, 26, 0.6));
+  margin-right: 6px;
 }
 
 .app-header .subtitle {
-  margin: 4px 0 0;
-  font-size: 0.9rem;
-  opacity: 0.92;
+  margin: 10px 0 0;
+  font-size: 0.92rem;
+  color: var(--magenta-soft);
+  text-shadow: 0 0 12px rgba(255, 46, 154, 0.55);
+  letter-spacing: 0.3px;
 }
 
 main {
-  max-width: 540px;
+  max-width: 560px;
   margin: 0 auto;
-  padding: 16px;
+  padding: 8px 16px 24px;
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
+/* ----- Glass cards ----- */
 .card {
-  background: var(--surface);
+  background: var(--glass-bg);
+  backdrop-filter: blur(22px) saturate(180%);
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius);
-  padding: 18px;
-  box-shadow: var(--shadow);
+  padding: 20px;
+  box-shadow: var(--shadow-deep), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .card h2 {
-  margin: 0 0 14px;
-  font-size: 1.05rem;
+  margin: 0 0 16px;
+  font-size: 0.95rem;
   font-weight: 700;
-  color: var(--text);
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--neon-cyan);
+  text-shadow: 0 0 12px rgba(0, 255, 245, 0.4);
 }
 
+/* ----- Presets ----- */
 .preset-buttons {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 12px;
 }
 
 .preset-btn {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  padding: 14px 10px;
-  border: 2px solid var(--border);
-  background: var(--surface-2);
+  gap: 4px;
+  padding: 14px 12px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg-2);
   color: var(--text);
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.15s ease;
   font-family: inherit;
+  transition: all 0.18s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .preset-btn small {
-  font-weight: 400;
-  font-size: 0.78rem;
-  color: var(--text-soft);
+  font-weight: 500;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  letter-spacing: 0.3px;
 }
 
 .preset-btn:hover {
-  border-color: var(--accent);
+  border-color: rgba(0, 217, 255, 0.5);
+  box-shadow: 0 0 18px rgba(0, 217, 255, 0.18);
 }
 
 .preset-btn.active {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: white;
+  border-color: var(--magenta);
+  background: linear-gradient(135deg, rgba(255, 46, 154, 0.18), rgba(157, 78, 221, 0.18));
+  box-shadow:
+    0 0 0 1px rgba(255, 46, 154, 0.4),
+    0 0 24px rgba(255, 46, 154, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  color: #fff;
 }
 
 .preset-btn.active small {
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--magenta-soft);
 }
 
+/* ----- Form ----- */
 .field {
   margin-bottom: 14px;
 }
@@ -137,84 +220,125 @@ main {
 
 .field label {
   display: block;
-  font-size: 0.88rem;
+  font-size: 0.8rem;
   font-weight: 600;
-  margin-bottom: 6px;
-  color: var(--text);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  color: var(--text-soft);
 }
 
 .field input {
   width: 100%;
-  padding: 11px 12px;
+  padding: 12px 14px;
   font-size: 1rem;
-  border: 1.5px solid var(--border);
-  border-radius: 8px;
-  background: var(--surface-2);
+  font-weight: 600;
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  background: rgba(10, 4, 32, 0.45);
   color: var(--text);
   font-family: inherit;
   -webkit-appearance: none;
   appearance: none;
+  transition: all 0.18s ease;
 }
 
 .field input:focus {
   outline: none;
-  border-color: var(--primary);
-  background: white;
+  border-color: var(--neon-blue);
+  background: rgba(10, 4, 32, 0.7);
+  box-shadow:
+    0 0 0 1px var(--neon-blue),
+    0 0 20px rgba(0, 217, 255, 0.3);
 }
 
 .field .hint {
   display: block;
-  margin-top: 5px;
+  margin-top: 6px;
   font-size: 0.78rem;
-  color: var(--text-soft);
-  line-height: 1.35;
+  color: var(--text-muted);
+  line-height: 1.4;
 }
 
+/* ----- Calculate button: sunburst (igual o forno) ----- */
 .calc-btn {
   width: 100%;
-  padding: 16px;
+  padding: 18px;
   font-size: 1.05rem;
-  font-weight: 700;
-  background: var(--primary);
-  color: white;
-  border: none;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #fff;
+  border: 1px solid rgba(255, 140, 26, 0.5);
   border-radius: var(--radius);
   cursor: pointer;
   font-family: inherit;
-  box-shadow: var(--shadow);
-  transition: background 0.15s ease, transform 0.05s ease;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 80% 100% at 50% 50%,
+      var(--sun-1) 0%,
+      var(--sun-2) 45%,
+      var(--sun-3) 75%,
+      var(--sun-0) 100%
+    );
+  box-shadow:
+    0 0 30px rgba(255, 140, 26, 0.4),
+    0 6px 20px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 200, 130, 0.3),
+    inset 0 -2px 8px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  transition: transform 0.05s ease, box-shadow 0.2s ease;
 }
 
 .calc-btn:hover {
-  background: var(--primary-dark);
+  box-shadow:
+    0 0 40px rgba(255, 140, 26, 0.6),
+    0 6px 24px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 220, 160, 0.4),
+    inset 0 -2px 8px rgba(0, 0, 0, 0.4);
 }
 
 .calc-btn:active {
   transform: scale(0.99);
 }
 
+/* ----- Result ----- */
 .result {
   scroll-margin-top: 12px;
+  border-color: var(--glass-border-strong);
+}
+
+.result h2 {
+  color: var(--magenta);
+  text-shadow: 0 0 14px rgba(255, 46, 154, 0.5);
 }
 
 .warning {
-  background: var(--warning-bg);
-  color: var(--warning-text);
-  border: 1px solid var(--warning-border);
-  border-radius: 8px;
+  background: rgba(255, 140, 26, 0.1);
+  color: #ffcfa3;
+  border: 1px solid rgba(255, 140, 26, 0.35);
+  border-radius: 10px;
   padding: 10px 12px;
-  font-size: 0.88rem;
-  margin-bottom: 14px;
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.warning div + div {
+  margin-top: 6px;
 }
 
 .totals {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-  gap: 8px;
-  margin-bottom: 18px;
-  padding: 14px;
-  background: var(--surface-2);
-  border-radius: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(95px, 1fr));
+  gap: 10px;
+  margin-bottom: 22px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  border: 1px solid rgba(0, 217, 255, 0.15);
 }
 
 .total-item {
@@ -225,24 +349,25 @@ main {
 }
 
 .total-item .label {
-  font-size: 0.75rem;
-  color: var(--text-soft);
+  font-size: 0.7rem;
+  color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.7px;
   font-weight: 600;
 }
 
 .total-item .value {
   font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--primary);
-  margin-top: 2px;
+  font-weight: 800;
+  color: var(--neon-blue);
+  margin-top: 3px;
+  text-shadow: 0 0 8px rgba(0, 217, 255, 0.5);
 }
 
 .recipe-step {
-  border-top: 1px solid var(--border);
-  padding-top: 14px;
-  margin-top: 14px;
+  border-top: 1px solid var(--glass-border);
+  padding-top: 18px;
+  margin-top: 18px;
 }
 
 .recipe-step:first-of-type {
@@ -254,46 +379,57 @@ main {
 .recipe-step h3 {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin: 0 0 8px;
+  gap: 12px;
+  margin: 0 0 10px;
   font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.3px;
 }
 
 .step-num {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  background: var(--primary);
-  color: white;
-  font-size: 0.85rem;
-  font-weight: 700;
+  background: linear-gradient(135deg, var(--magenta), var(--purple));
+  color: #fff;
+  font-size: 0.88rem;
+  font-weight: 800;
+  box-shadow: 0 0 16px rgba(255, 46, 154, 0.5);
 }
 
 .step-desc {
-  margin: 0 0 10px;
+  margin: 0 0 12px;
   font-size: 0.9rem;
   color: var(--text-soft);
+}
+
+.step-desc strong {
+  color: var(--neon-blue-soft);
+  font-weight: 700;
 }
 
 .ingredients {
   list-style: none;
   margin: 0;
   padding: 0;
-  background: var(--surface-2);
-  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
   overflow: hidden;
+  border: 1px solid var(--glass-border);
 }
 
 .ingredients li {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 12px;
+  padding: 11px 14px;
   font-size: 0.95rem;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--glass-border);
+  color: var(--text-soft);
 }
 
 .ingredients li:last-child {
@@ -301,33 +437,38 @@ main {
 }
 
 .ingredients li strong {
-  font-weight: 700;
-  color: var(--primary);
+  font-weight: 800;
+  color: var(--neon-blue);
+  text-shadow: 0 0 6px rgba(0, 217, 255, 0.35);
+  font-variant-numeric: tabular-nums;
 }
 
 .recipe-meta {
-  margin-top: 12px;
+  margin-top: 14px;
   text-align: center;
-  color: var(--text-soft);
+  color: var(--text-muted);
+  font-size: 0.78rem;
 }
 
 .app-footer {
   text-align: center;
-  padding: 16px;
-  color: var(--text-soft);
+  padding: 20px 16px 28px;
+  color: var(--text-muted);
+  font-size: 0.78rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #1a1410;
-    --surface: #2a221c;
-    --surface-2: #221b16;
-    --text: #f3e7d4;
-    --text-soft: #b39c80;
-    --border: #3d3128;
-    --shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+/* Compat: navegadores sem backdrop-filter ganham fundo um pouco mais opaco */
+@supports not ((backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px))) {
+  .card {
+    background: rgba(20, 8, 50, 0.85);
   }
-  .field input:focus {
-    background: var(--surface-2);
+  .preset-btn {
+    background: rgba(20, 8, 50, 0.85);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
   }
 }

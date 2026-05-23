@@ -1,29 +1,56 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <defs>
-    <radialGradient id="bg" cx="50%" cy="45%" r="60%">
-      <stop offset="0%" stop-color="#e67e22"/>
-      <stop offset="100%" stop-color="#c0392b"/>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1a0838"/>
+      <stop offset="55%" stop-color="#3a0a5e"/>
+      <stop offset="100%" stop-color="#ff2e9a"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="50%" cy="100%" r="55%">
+      <stop offset="0%" stop-color="#ffd84a"/>
+      <stop offset="55%" stop-color="#ff8c1a"/>
+      <stop offset="100%" stop-color="#ff2e9a" stop-opacity="0"/>
     </radialGradient>
     <radialGradient id="crust" cx="50%" cy="50%" r="50%">
       <stop offset="78%" stop-color="#f7cf8f"/>
       <stop offset="100%" stop-color="#a8662a"/>
     </radialGradient>
     <radialGradient id="sauce" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#e74c3c"/>
+      <stop offset="0%" stop-color="#ff5240"/>
       <stop offset="100%" stop-color="#c0392b"/>
     </radialGradient>
+    <filter id="neon">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
+
+  <!-- fundo synthwave -->
   <rect width="512" height="512" rx="96" fill="url(#bg)"/>
-  <circle cx="256" cy="256" r="180" fill="url(#crust)"/>
-  <circle cx="256" cy="256" r="150" fill="url(#sauce)"/>
-  <!-- queijo / manchas brancas -->
-  <circle cx="200" cy="200" r="22" fill="#fdf6ec" opacity="0.95"/>
-  <circle cx="310" cy="210" r="18" fill="#fdf6ec" opacity="0.95"/>
-  <circle cx="220" cy="300" r="20" fill="#fdf6ec" opacity="0.95"/>
-  <circle cx="320" cy="310" r="24" fill="#fdf6ec" opacity="0.95"/>
-  <circle cx="265" cy="260" r="16" fill="#fdf6ec" opacity="0.95"/>
+
+  <!-- sol neon ao fundo -->
+  <circle cx="256" cy="380" r="170" fill="url(#sun)" opacity="0.85"/>
+
+  <!-- linhas de horizonte neon -->
+  <g stroke="#00d9ff" stroke-width="1.5" opacity="0.45" filter="url(#neon)">
+    <line x1="40"  y1="410" x2="472" y2="410"/>
+    <line x1="20"  y1="445" x2="492" y2="445"/>
+    <line x1="0"   y1="482" x2="512" y2="482"/>
+  </g>
+
+  <!-- pizza -->
+  <circle cx="256" cy="246" r="155" fill="url(#crust)"/>
+  <circle cx="256" cy="246" r="128" fill="url(#sauce)"/>
+  <!-- queijo -->
+  <circle cx="208" cy="200" r="18" fill="#fdf6ec" opacity="0.95"/>
+  <circle cx="304" cy="208" r="15" fill="#fdf6ec" opacity="0.95"/>
+  <circle cx="220" cy="288" r="17" fill="#fdf6ec" opacity="0.95"/>
+  <circle cx="310" cy="290" r="20" fill="#fdf6ec" opacity="0.95"/>
+  <circle cx="263" cy="248" r="14" fill="#fdf6ec" opacity="0.95"/>
   <!-- manjericão -->
-  <ellipse cx="180" cy="265" rx="10" ry="14" fill="#27ae60" transform="rotate(-20 180 265)"/>
-  <ellipse cx="290" cy="170" rx="10" ry="14" fill="#27ae60" transform="rotate(30 290 170)"/>
-  <ellipse cx="280" cy="345" rx="10" ry="14" fill="#27ae60" transform="rotate(-40 280 345)"/>
+  <ellipse cx="190" cy="250" rx="9" ry="13" fill="#27ae60" transform="rotate(-20 190 250)"/>
+  <ellipse cx="290" cy="170" rx="9" ry="13" fill="#27ae60" transform="rotate(30 290 170)"/>
+  <ellipse cx="282" cy="320" rx="9" ry="13" fill="#27ae60" transform="rotate(-40 282 320)"/>
 </svg>
