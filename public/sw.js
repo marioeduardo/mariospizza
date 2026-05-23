@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mariospizza-v3';
+const CACHE_NAME = 'mariospizza-v4';
 const ASSETS = [
   '/',
   '/index.html',
@@ -24,6 +24,9 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
+// Network-first para o app shell (HTML, JS, CSS, JSON): o usuário sempre
+// pega a versão mais recente quando online; cache fica só como fallback offline.
+// Cache-first apenas para imagens/ícones (raramente mudam).
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') return;
@@ -31,30 +34,34 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
 
-  // Estratégia: network-first para HTML (para pegar atualizações), cache-first para o resto.
-  if (req.mode === 'navigate' || req.destination === 'document') {
+  const isImage = req.destination === 'image';
+
+  if (isImage) {
     event.respondWith(
-      fetch(req)
-        .then((res) => {
-          const copy = res.clone();
-          caches.open(CACHE_NAME).then((c) => c.put(req, copy));
+      caches.match(req).then((cached) => {
+        if (cached) return cached;
+        return fetch(req).then((res) => {
+          if (res.ok) {
+            const copy = res.clone();
+            caches.open(CACHE_NAME).then((c) => c.put(req, copy));
+          }
           return res;
-        })
-        .catch(() => caches.match(req).then((r) => r || caches.match('/index.html')))
+        });
+      })
     );
     return;
   }
 
+  // Network-first para tudo mais
   event.respondWith(
-    caches.match(req).then((cached) => {
-      if (cached) return cached;
-      return fetch(req).then((res) => {
+    fetch(req)
+      .then((res) => {
         if (res.ok) {
           const copy = res.clone();
           caches.open(CACHE_NAME).then((c) => c.put(req, copy));
         }
         return res;
-      });
-    })
+      })
+      .catch(() => caches.match(req).then((r) => r || caches.match('/index.html')))
   );
 });
